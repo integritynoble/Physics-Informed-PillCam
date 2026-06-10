@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/integritynoble/GI_Multi_Task/blob/main/benchmark/submission_schema.json",
+  "title": "GalKva-2026 submission",
+  "description": "Schema for a method's submission to the GalKva-2026 cross-vendor capsule endoscopy benchmark.",
+  "type": "object",
+  "required": ["submitter", "method", "benchmark_version", "results"],
+  "properties": {
+    "submitter": {
+      "type": "object",
+      "required": ["name", "affiliation", "email"],
+      "properties": {
+        "name":        {"type": "string", "minLength": 1},
+        "affiliation": {"type": "string", "minLength": 1},
+        "email":       {"type": "string", "format": "email"}
+      }
+    },
+    "method": {
+      "type": "object",
+      "required": ["name", "description"],
+      "properties": {
+        "name":         {"type": "string", "minLength": 1, "maxLength": 120},
+        "description":  {"type": "string", "minLength": 20},
+        "preprint_url": {"type": "string", "format": "uri"},
+        "code_url":     {"type": "string", "format": "uri"},
+        "trained_on":   {
+          "type": "string",
+          "enum": ["Kvasir-Capsule", "Galar", "Both", "Other"],
+          "description": "Which dataset(s) the model saw at training time. 'Galar' under this benchmark is allowed only when the method is positioned as Galar-trained Kvasir-zero-shot."
+        }
+      }
+    },
+    "benchmark_version": {
+      "type": "string",
+      "pattern": "^v\\d+\\.\\d+$",
+      "description": "GalKva-2026 release tag (e.g. v1.0)."
+    },
+    "results": {
+      "type": "object",
+      "required": ["kvasir", "galar"],
+      "properties": {
+        "kvasir": {"$ref": "#/$defs/dataset_results"},
+        "galar":  {"$ref": "#/$defs/dataset_results"}
+      }
+    },
+    "n_seeds":  {
+      "type": "integer", "minimum": 1, "maximum": 100,
+      "description": "Number of random-seed repetitions; ≥6 expected for headline submission."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form caveats; e.g. training-data scope, hyperparameter search budget, license-of-method."
+    }
+  },
+  "$defs": {
+    "dataset_results": {
+      "type": "object",
+      "required": ["macro_auc", "per_class_auc", "n_test_frames"],
+      "properties": {
+        "macro_auc": {
+          "type": "object",
+          "required": ["mean", "sd"],
+          "properties": {
+            "mean": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+            "sd":   {"type": "number", "minimum": 0.0},
+            "per_seed_values": {
+              "type": "array",
+              "items": {"type": "number", "minimum": 0.0, "maximum": 1.0}
+            }
+          }
+        },
+        "per_class_auc": {
+          "type": "object",
+          "description": "Cross-seed mean per-class AUC. Keys = Kvasir class names.",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "mean": {"type": "number", "minimum": 0.0, "maximum": 1.0},
+              "sd":   {"type": "number", "minimum": 0.0},
+              "n_positive": {"type": "integer", "minimum": 0}
+            }
+          }
+        },
+        "n_test_frames": {"type": "integer", "minimum": 1},
+        "delta_vs_rgb_baseline": {
+          "type": "number",
+          "description": "Optional paired Δ vs the same author's RGB-only baseline; the benchmark's retention metric divides Δ_Galar / Δ_Kvasir."
+        },
+        "sign_positive_seeds": {
+          "type": "string",
+          "pattern": "^\\d+/\\d+$",
+          "description": "Number of seeds where the method beat its RGB baseline, e.g. '4/6'."
+        }
+      }
+    }
+  }
+}

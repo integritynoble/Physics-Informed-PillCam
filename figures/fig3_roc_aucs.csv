@@ -1,0 +1,15 @@
+class,rgb,pi,distill
+Ampulla of Vater,nan,nan,nan
+Angiectasia,0.528,0.916,0.843
+Blood - fresh,0.730,0.697,0.708
+Blood - hematin,nan,nan,nan
+Erosion,0.772,0.801,0.777
+Erythema,0.991,0.845,0.996
+Foreign Body,0.997,0.973,0.974
+Ileocecal valve,0.825,0.831,0.806
+Lymphangiectasia,0.184,0.367,0.498
+Normal clean mucosa,0.794,0.872,0.812
+Polyp,nan,nan,nan
+Pylorus,0.834,0.883,0.869
+Reduced Mucosal View,0.672,0.661,0.741
+Ulcer,0.934,0.923,0.948

@@ -1,0 +1,55 @@
+{
+  "submitter": {
+    "name": "Chengshuai Yang",
+    "affiliation": "UT Southwestern Medical Center (BME)",
+    "email": "raiyan.zaman@utsouthwestern.edu"
+  },
+  "method": {
+    "name": "Yang2026-ConvNeXt-Tiny+PI 5-ch input fusion",
+    "description": "ConvNeXt-Tiny backbone with first conv expanded from 3 to 5 channels to consume P_blood (hemoglobin probability map from a Monte Carlo-inspired light-transport model) and Phi (radial fluence map) alongside RGB. Trained on Kvasir-Capsule; evaluated zero-shot on Galar.",
+    "preprint_url": "https://arxiv.org/abs/PLACEHOLDER",
+    "code_url": "https://github.com/integritynoble/GI_Multi_Task",
+    "trained_on": "Kvasir-Capsule"
+  },
+  "benchmark_version": "v1.0",
+  "n_seeds": 6,
+  "results": {
+    "kvasir": {
+      "macro_auc": {
+        "mean": 0.764,
+        "sd": 0.015,
+        "per_seed_values": [0.770, 0.756, 0.751, 0.770, 0.763, 0.776]
+      },
+      "per_class_auc": {
+        "Angiectasia":         {"mean": 0.812, "sd": 0.024},
+        "Blood - fresh":       {"mean": 0.598, "sd": 0.041},
+        "Lymphangiectasia":    {"mean": 0.330, "sd": 0.022},
+        "Normal clean mucosa": {"mean": 0.881, "sd": 0.018},
+        "Polyp":               {"mean": 0.745, "sd": 0.071},
+        "Ulcer":               {"mean": 0.972, "sd": 0.015}
+      },
+      "n_test_frames": 8623,
+      "delta_vs_rgb_baseline": 0.018,
+      "sign_positive_seeds": "4/6"
+    },
+    "galar": {
+      "macro_auc": {
+        "mean": 0.745,
+        "sd": 0.022,
+        "per_seed_values": [0.745, 0.756, 0.710, 0.761, 0.729, 0.770]
+      },
+      "per_class_auc": {
+        "Angiectasia":         {"mean": 0.541, "sd": null, "n_positive": 364},
+        "Blood - fresh":       {"mean": 0.519, "sd": null, "n_positive": 326},
+        "Lymphangiectasia":    {"mean": 0.629, "sd": null, "n_positive": 66},
+        "Normal clean mucosa": {"mean": 0.924, "sd": null, "n_positive": 10000},
+        "Polyp":               {"mean": 0.623, "sd": null, "n_positive": 179},
+        "Ulcer":               {"mean": 0.757, "sd": null, "n_positive": 7}
+      },
+      "n_test_frames": 15298,
+      "delta_vs_rgb_baseline": 0.011,
+      "sign_positive_seeds": "4/6"
+    }
+  },
+  "notes": "Baseline submission generated 2026-05-16 from the GalKva-2026 v1.0 release. Kvasir per-class AUCs are placeholders from the same author's Table 4 (paper §4.7); cross-vendor Galar numbers are from §4.6 of the same paper. The Ulcer Galar AUC is high-variance due to n_positive=7 in the 10-video subset; future Galar v1.1 with the full 80-video release will tighten this."
+}

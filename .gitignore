@@ -1,0 +1,68 @@
+# Data (local, large, not for version control)
+stage2_data/
+stage3_data/
+stage4_data/
+multitask_data/
+video_data/
+kvasir_capsule/
+labelled_images/
+*.zip
+
+# Model outputs
+outputs/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+
+# Figures from training runs (commit final figures explicitly if needed)
+fig*_dev.png
+fig*_dev.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Grant / internal documents (never commit — proprietary material)
+*.pdf
+*.docx
+*.pptx
+Research Strategy*
+*proprietary*
+*Proprietary*
+
+# Explicit whitelist: paper-output artifacts intended for public release.
+# These override the *.pdf / *.docx / *.pptx blanket exclusions above.
+!paper.pdf
+!paper_draft_render.pdf
+!fig2_blood_kvasir.pdf
+!figures/*.pdf
+!figures/*.png
+!sections/
+!sections/*.tex
+!references.bib
+
+# Excluded from this PIP repo (the canonical copies live in GI_Multi_Task):
+arxiv_submission/
+Dr.Zaman_reivew/
+
+# UTSW-derived QC figures and local debug artifacts — never ship
+fig2_blood_qc.png
+fig2_blood_qc.pdf
+bash.exe.stackdump
+*.stackdump

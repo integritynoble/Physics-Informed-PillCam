@@ -1,0 +1,79 @@
+{
+  "_comment": "Galar -> Kvasir-Capsule class mapping. Refreshed 2026-05-15 after inspecting the actual Galar metadata.csv + 80 per-video Labels/N.csv files. The mapping is now empirically validated; positives counts and source-video coverage are inline for each entry. 11+ Kvasir classes are evaluable on Galar (vs the originally-planned 6) because Galar provides direct labels for most Kvasir categories AND has meaningful test support for the three Kvasir-train-only classes (Ampulla, Blood-hematin, Polyp).",
+  "_dataset_source": "https://plus.figshare.com/articles/dataset/Galar_-_a_large_multi-label_video_capsule_endoscopy_dataset/25304616",
+  "_paper": "Galar (Scientific Data 2025): https://www.nature.com/articles/s41597-025-05112-7",
+  "_galar_total_frames": 3513539,
+  "_galar_total_videos": 80,
+  "_galar_csv_format": "One CSV per video at Labels/<vid_id>.csv. Multi-label one-hot per frame. Two header variants: 27-column (74 videos) and 32-column (6 videos with bubbles/dirt/view-quality preface).",
+
+  "_kvasir_evaluable_classes_target": [
+    "Angiectasia",
+    "Blood - fresh",
+    "Blood - hematin",
+    "Erosion",
+    "Erythema",
+    "Foreign Body",
+    "Ileocecal valve",
+    "Lymphangiectasia",
+    "Normal clean mucosa",
+    "Polyp",
+    "Pylorus",
+    "Ulcer",
+    "Ampulla of Vater"
+  ],
+  "_kvasir_not_evaluable_on_galar": [
+    "Reduced Mucosal View (only 6 of 80 Galar videos carry the view-quality labels)"
+  ],
+
+  "_galar_to_kvasir_mapping_table": [
+    {"galar_column": "angiectasia",      "kvasir_class": "Angiectasia",        "positives": 16803, "n_videos": 41},
+    {"galar_column": "active bleeding",  "kvasir_class": "Blood - fresh",      "positives":  5325, "n_videos": 13},
+    {"galar_column": "hematin",          "kvasir_class": "Blood - hematin",    "positives": 31773, "n_videos": 22},
+    {"galar_column": "erosion",          "kvasir_class": "Erosion",            "positives": 39105, "n_videos": 45},
+    {"galar_column": "erythema",         "kvasir_class": "Erythema",           "positives":  6228, "n_videos": 30},
+    {"galar_column": "foreign body",     "kvasir_class": "Foreign Body",       "positives":    94, "n_videos":  4},
+    {"galar_column": "ileocecal valve",  "kvasir_class": "Ileocecal valve",    "positives":  3692, "n_videos": 53},
+    {"galar_column": "lymphangioectasis","kvasir_class": "Lymphangiectasia",   "positives": 17660, "n_videos": 39},
+    {"galar_column": "polyp",            "kvasir_class": "Polyp",              "positives": 18415, "n_videos": 33},
+    {"galar_column": "pylorus",          "kvasir_class": "Pylorus",            "positives":  3183, "n_videos": 58},
+    {"galar_column": "ulcer",            "kvasir_class": "Ulcer",              "positives": 11428, "n_videos": 16},
+    {"galar_column": "ampulla of vater", "kvasir_class": "Ampulla of Vater",   "positives":  1740, "n_videos":  8}
+  ],
+
+  "_normal_clean_mucosa_derivation": {
+    "_comment": "Galar has no direct 'normal' column. We derive Normal clean mucosa as: section == 'small intestine' AND no pathology positive AND (good view == 1 if column present else accept).",
+    "section_column": "section",
+    "section_required_value": "small intestine",
+    "pathology_columns_must_all_be_zero": [
+      "ulcer", "polyp", "active bleeding", "blood", "erythema",
+      "erosion", "angiectasia", "IBD", "foreign body",
+      "esophagitis", "varices", "hematin", "celiac", "cancer",
+      "lymphangioectasis"
+    ],
+    "view_quality_column_optional": "good view",
+    "expected_positives": 1169906,
+    "comment": "Conservative — counts every clean small-intestine frame across all 80 videos. The actual zero-shot eval can subsample to control class balance vs the rarer pathologies."
+  },
+
+  "_anatomical_section_filter": {
+    "_comment": "For lesion classes (Angiectasia, Erosion, Polyp, etc.) we DON'T restrict to small intestine because Galar labels lesions wherever they occur. For Ileocecal valve and Pylorus the location is mechanically constrained.",
+    "_default_strategy": "keep_all_sections_per_class_label",
+    "_alternative_strategy_for_strict_match_to_kvasir_scope": "keep_only_section_eq_small_intestine"
+  },
+
+  "_capsule_system_stratification": {
+    "_purpose": "Stratify eval results by acquisition device. Kvasir-Capsule is PillCam, so PillCam-subset of Galar is the within-vendor test; Olympus-subset is cross-vendor.",
+    "available_systems": {
+      "PillCam SB3":   51,
+      "Olympus":       22,
+      "PillCam Colon2": 5,
+      "PillCam SB2":    2
+    },
+    "metadata_column": "Capsule System",
+    "metadata_csv_path": "metadata.csv",
+    "pillcam_video_subset": ["PillCam SB3", "PillCam Colon2", "PillCam SB2"],
+    "olympus_video_subset": ["Olympus"]
+  },
+
+  "_review_status": "Refreshed 2026-05-15 against the downloaded metadata.csv + 80 per-video CSVs. Positives + n_videos are empirically counted. Ready for setup_galar.py."
+}

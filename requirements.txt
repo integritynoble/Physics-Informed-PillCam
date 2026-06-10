@@ -1,0 +1,15 @@
+# Pinned versions for the PillCam computational-imaging paper.
+# Verified against the smoke_test.py environment on 2026-04-23 (CUDA 12.4 / driver 566.36).
+# Install torch + torchvision via the official wheel URL to pick up CUDA 12.4 builds:
+#   pip install torch==2.6.0+cu124 torchvision==0.21.0+cu124 --index-url https://download.pytorch.org/whl/cu124
+# Then:
+#   pip install -r requirements.txt --no-deps
+# (--no-deps keeps the CUDA-tagged torch/torchvision pinned above.)
+torch==2.6.0+cu124
+torchvision==0.21.0+cu124
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.5.2
+pillow==10.4.0
+matplotlib==3.8.4
+tqdm==4.66.5

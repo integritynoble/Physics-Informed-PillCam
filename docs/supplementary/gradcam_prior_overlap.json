@@ -1,0 +1,100 @@
+{
+  "seed": 42,
+  "n_per_class": 50,
+  "focal_classes": [
+    "Angiectasia",
+    "Blood - fresh",
+    "Erosion",
+    "Lymphangiectasia",
+    "Pylorus",
+    "Normal clean mucosa"
+  ],
+  "rgb": {
+    "Angiectasia": {
+      "n_frames": 50,
+      "dice_mean": 0.009139099242726186,
+      "dice_sd": 0.043568769817095634,
+      "iou_mean": 0.005127325505529513,
+      "iou_sd": 0.02452967398460192
+    },
+    "Blood - fresh": {
+      "n_frames": 50,
+      "dice_mean": 0.033689759762992606,
+      "dice_sd": 0.08651715636160559,
+      "iou_mean": 0.019392760745057813,
+      "iou_sd": 0.05141462109026837
+    },
+    "Erosion": {
+      "n_frames": 50,
+      "dice_mean": 0.4666244891213555,
+      "dice_sd": 0.2762242839082952,
+      "iou_mean": 0.346899277931284,
+      "iou_sd": 0.23927918957620484
+    },
+    "Lymphangiectasia": {
+      "n_frames": 50,
+      "dice_mean": 0.00031476822696645794,
+      "dice_sd": 0.0018803139769673423,
+      "iou_mean": 0.00015829866997483282,
+      "iou_sd": 0.0009462709293169308
+    },
+    "Pylorus": {
+      "n_frames": 50,
+      "dice_mean": 0.20568629839708058,
+      "dice_sd": 0.1621633181204901,
+      "iou_mean": 0.12573406296056894,
+      "iou_sd": 0.12513344383310546
+    },
+    "Normal clean mucosa": {
+      "n_frames": 50,
+      "dice_mean": 0.6002888361400229,
+      "dice_sd": 0.1528054390995398,
+      "iou_mean": 0.4453926289526418,
+      "iou_sd": 0.15233809174571966
+    }
+  },
+  "pi": {
+    "Angiectasia": {
+      "n_frames": 50,
+      "dice_mean": 0.312531969221461,
+      "dice_sd": 0.20950067152868102,
+      "iou_mean": 0.20691332853541078,
+      "iou_sd": 0.1789464387997128
+    },
+    "Blood - fresh": {
+      "n_frames": 50,
+      "dice_mean": 0.04197169169734817,
+      "dice_sd": 0.09257256680427822,
+      "iou_mean": 0.024035089330692157,
+      "iou_sd": 0.05505743124502615
+    },
+    "Erosion": {
+      "n_frames": 50,
+      "dice_mean": 0.2944641584644705,
+      "dice_sd": 0.1449545620312675,
+      "iou_mean": 0.1814907471106556,
+      "iou_sd": 0.104800767866951
+    },
+    "Lymphangiectasia": {
+      "n_frames": 50,
+      "dice_mean": 0.001653652098774045,
+      "dice_sd": 0.007394975879653377,
+      "iou_mean": 0.0008414634464063566,
+      "iou_sd": 0.003770602382525
+    },
+    "Pylorus": {
+      "n_frames": 50,
+      "dice_mean": 0.29609660481345673,
+      "dice_sd": 0.21933438966540025,
+      "iou_mean": 0.19470491341474255,
+      "iou_sd": 0.16422413337875133
+    },
+    "Normal clean mucosa": {
+      "n_frames": 50,
+      "dice_mean": 0.5643783763241559,
+      "dice_sd": 0.18193476303591224,
+      "iou_mean": 0.4155234860422173,
+      "iou_sd": 0.1785929033836168
+    }
+  }
+}
