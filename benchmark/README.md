@@ -32,11 +32,21 @@ vendor mixes:
 The benchmark exposes the **6-class cross-dataset evaluable
 intersection** (Angiectasia, Blood-fresh, Lymphangiectasia,
 Normal-clean-mucosa, Polyp, Ulcer) and, on Galar, the **13-class
-single-dataset extension**. The benchmark's evaluation script
-computes the standard MedIA / IEEE TMI reporting suite (cross-seed
-macro-AUC, paired DeLong, per-class p-values with both Bonferroni
-and BH-FDR corrections, percentile and BCa bootstrap CIs,
-McNemar at argmax).
+single-dataset extension**. v1.0 scoring is on the **6-class
+evaluable intersection**; the 13-class Galar extension is reported
+separately and is not part of the v1.0 retention ranking.
+
+**What the evaluator does.** [`evaluate.py`](./evaluate.py) is a
+*submission formatter*: it ingests a submission JSON of self-reported
+per-seed and per-class macro-AUCs (validated against
+[`submission_schema.json`](./submission_schema.json)), computes the
+cross-vendor **retention ratio**
+$\Delta_\mathrm{Galar}/\Delta_\mathrm{Kvasir}$ and its band, and emits
+a Markdown leaderboard entry. It does **not** ingest per-frame
+predictions or recompute DeLong / BCa / McNemar — those statistics are
+produced upstream from prediction-level outputs by
+[`../stats_pi.py`](../stats_pi.py) and reported by the submitter. A
+prediction-level evaluator is planned for a future benchmark version.
 
 ---
 
@@ -44,33 +54,38 @@ McNemar at argmax).
 
 ```bash
 # 1. Clone this repo
-git clone https://github.com/integritynoble/GI_Multi_Task
-cd GI_Multi_Task
+git clone https://github.com/integritynoble/Physics-Informed-PillCam
+cd Physics-Informed-PillCam
 
 # 2. Stage the data (you bring your own Kvasir + Galar downloads)
-python GI_project/code/Capsule-Endoscopy/setup_kvasir_capsule.py \
-    --images_zip <path>/kvasir-capsule-labeled-images.zip \
+python setup_kvasir_capsule.py \
+    --images_dir <path>/kvasir-capsule-labeled-images \
     --metadata   <path>/metadata.csv \
     --out_dir    data/kvasir_eval --mode hardlink
-python GI_project/code/galar/setup_galar.py \
+python code/galar/setup_galar.py \
     --galar_root <path>/galar_raw \
     --out_dir    data/galar_eval \
-    --mapping    GI_project/code/galar/galar_class_mapping.json \
+    --mapping    benchmark/class_mapping.json \
     --mode       hardlink
 
-# 3. Run your method on both datasets; emit a submission JSON
-python your_method.py --eval_dir data/kvasir_eval/test --out kvasir_results.json
-python your_method.py --eval_dir data/galar_eval/test  --out galar_results.json
+# 3. Run your method on both datasets and assemble ONE submission JSON
+#    conforming to benchmark/submission_schema.json (self-reported per-seed
+#    and per-class macro-AUCs for kvasir and galar). See
+#    benchmark/reference_results/yang2026_convnext_pi.json for a worked example.
 
-# 4. Evaluate against the benchmark
+# 4. Format the submission into a leaderboard entry (computes retention ratio)
 python benchmark/evaluate.py \
-    --kvasir kvasir_results.json --galar galar_results.json \
-    --submitter "Your Name" --method "MethodName-v1" \
-    --out submissions/your_method_v1.md
+    --submission submissions/your_method_v1.json \
+    --out        submissions/your_method_v1.md
 
-# 5. Open a pull request adding the submission JSON to submissions/
+# 5. Open a pull request adding your_method_v1.json to submissions/
 #    We'll merge after a sanity-check pass and update LEADERBOARD.md.
 ```
+
+> The evaluator consumes a **single submission JSON**, not raw predictions
+> or two per-dataset result files. The schema, an end-to-end worked example,
+> and the exact required fields are in `submission_schema.json` and
+> `reference_results/yang2026_convnext_pi.json`.
 
 ---
 
@@ -104,7 +119,8 @@ python benchmark/evaluate.py \
 | [`README.md`](./README.md) | This document |
 | [`class_mapping.json`](./class_mapping.json) | Canonical Kvasir-Galar 6-class intersection (and 13-class Galar extension) |
 | [`submission_schema.json`](./submission_schema.json) | JSON Schema that submissions must conform to |
-| [`evaluate.py`](./evaluate.py) | Evaluator: takes a submission JSON, computes standard metrics, emits a Markdown report |
+| [`evaluate.py`](./evaluate.py) | Submission formatter: takes one submission JSON, computes the retention ratio + band, emits a Markdown leaderboard entry (does not recompute DeLong/BCa/McNemar — see note above) |
+| [`canonical_splits/kvasir_split_manifest_2026-05-18.json`](./canonical_splits/kvasir_split_manifest_2026-05-18.json) | Canonical patient-disjoint Kvasir split (train=31,820 / val=8,986 / test=6,423) with SHA-256 content hash; the authoritative split for headline reproduction |
 | [`reference_results/`](./reference_results/) | Our baseline reference submissions (RGB + 5-channel PI + distillation, all 6 seeds, both backbones) |
 | [`../LEADERBOARD.md`](../LEADERBOARD.md) | Current public results ranked by Galar retention |
 
@@ -129,7 +145,7 @@ python benchmark/evaluate.py \
 
 | Version | Date | Notes |
 |---|---|---|
-| v1.0 | 2026-05-16 | Initial release. Kvasir-Capsule full + Galar 10-video subset (15\,298 frames). |
+| v1.0 | 2026-05-16 | Initial release. Kvasir-Capsule (canonical split per [`canonical_splits/kvasir_split_manifest_2026-05-18.json`](./canonical_splits/kvasir_split_manifest_2026-05-18.json), test=6,423) + Galar 10-video subset (15\,298 frames). Scoring on the 6-class evaluable intersection. |
 | v1.1 (planned) | TBD | Full Galar 80-video release (3.51 M frames) once we complete extraction. |
 | v2.0 (planned) | TBD | Adds KID Atlas (pending access approval) as a third cross-vendor cohort. |
 

@@ -8,16 +8,17 @@
 #      RGB + aux P_blood head)
 #
 # Estimated wall-clock: ~3.5 h per config x 3 = ~10-12 h. Run overnight.
-# Outputs: D:/kvasir_capsule/outputs/stage2_{rgb,pi,distill}_effb0/
+# Outputs: $OUT_BASE/stage2_{rgb,pi,distill}_effb0/
 # Each output dir gets training_history.json, test_metrics.json, best_model.pt.
 
 # Intentionally NOT set -e: if one config fails, the others should still run.
 # Each python invocation's exit status is captured and reported below.
 
-# Paths default to the local lab layout; override via environment variables.
-: "${DATA_DIR:=D:/kvasir_capsule/stage2_data}"
-: "${OUT_BASE:=D:/kvasir_capsule/outputs}"
-: "${GASTRO_DIR:=D:/onedrive/UT_southwestern/GIproject/Dr. Zaman/gastroscopy_code_package (2)/gastroscopy_code_package}"
+# Paths default to POSIX relative dirs under the cwd; override via environment
+# variables (reproduce.sh exports these). No machine-specific paths.
+: "${DATA_DIR:=./stage2_data}"
+: "${OUT_BASE:=./outputs}"
+: "${GASTRO_DIR:=./gastroscopy_code_package}"
 # Resume support: training scripts auto-resume from $OUT/last.pt if present.
 # To force a fresh start (e.g. after re-splitting the data), pass --no_resume
 # or delete last.pt + best_model.pt in each output dir before running.

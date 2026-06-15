@@ -7,12 +7,13 @@
 # satisfy that. Wall clock: ~25 h per run × 6 ≈ 6 days, but early-stopping
 # (patience=8) typically halves that since val plateaus by epoch ~5.
 #
-# Outputs land at: D:/kvasir_capsule/outputs/stage2_{rgb,pi,distill}_effb0_v2_seed{41,43}/
+# Outputs land at: $OUT_BASE/stage2_{rgb,pi,distill}_effb0_v2_seed{41,43}/
 set -e
 
-OUT=D:/kvasir_capsule/outputs
-DATA=D:/kvasir_capsule/stage2_data
-GASTRO="D:/onedrive/UT_southwestern/GIproject/Dr. Zaman/gastroscopy_code_package (2)/gastroscopy_code_package"
+# Overridable via environment variables; POSIX relative defaults.
+OUT="${OUT_BASE:-./outputs}"
+DATA="${DATA_DIR:-./stage2_data}"
+GASTRO="${GASTRO_DIR:-./gastroscopy_code_package}"
 
 # --gastroscopy_code_dir is passed separately because $GASTRO contains spaces.
 # No --label_smoothing — see comment in run_headline_v2_effb0.sh (smoothing

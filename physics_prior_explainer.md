@@ -49,7 +49,8 @@ Our radial fluence map `Φ(r) = exp(−r/λ_eff)` is the **first-order analytic 
 | `blood_probability` | same | 70–93 |
 | `physics_channels` *(the 2-channel concatenator)* | same | 96–112 |
 
-The numpy mirror used by `make_fig2.py` lives at `make_fig2.py:36–63` and produces the qualitative panel (RGB | H map | Φ map | P_blood overlay) rendered as `fig2_blood_kvasir.png`.
+The same analytic functions in `physics_prior.py` produce the qualitative
+panel (RGB | H map | Φ map | P_blood overlay) shown as Fig. 2 in the paper.
 
 ## In one sentence
 

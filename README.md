@@ -37,12 +37,37 @@ significant under both Bonferroni- and BH-FDR-corrected DeLong tests.
 | [`docs/`](./docs) | Summary reports for the channel ablation, BiomedCLIP / DINOv2 baselines, calibration, Grad-CAM/prior overlap, per-patient lift |
 | [`scripts/`](./scripts) | Released SLURM job scripts |
 
+## Dependencies
+
+The training scripts (`train_stage2_pi.py`, `train_stage2_pi_distill.py`,
+`figures/eval_test_predictions.py`) import `datasets.py`, `models.py` and
+`utils.py` from the upstream **`gastroscopy_code_package`**, which is **not
+bundled in this repo**. Provide it on disk and point `GASTRO_DIR` (or the
+`--gastroscopy_code_dir` flag) at it. A vendored, version-pinned copy will be
+included in the public release; until then, set `GASTRO_DIR` to your local
+checkout.
+
 ## Quick start
+
+There are two reproduction paths — a one-GPU smoke test and the published
+headline run. Pick the right one:
 
 ```bash
 pip install -r requirements.txt
-python setup_kvasir_capsule.py --root /path/to/Kvasir-Capsule
-bash reproduce.sh                # train + evaluate 6 seeds (~6 GPU-hours)
+
+# Stage Kvasir-Capsule (downloaded + accepted from datasets.simula.no)
+python setup_kvasir_capsule.py \
+    --images_dir /path/to/kvasir-capsule-labeled-images \
+    --metadata   /path/to/metadata.csv \
+    --out_dir    ./stage2_data --mode hardlink
+
+# (A) SMOKE / sanity — single seed (42), 3 input variants. Confirms the
+#     pipeline runs end to end and emits predictions + figures. ~10–12 GPU-h.
+GASTRO_DIR=/path/to/gastroscopy_code_package bash reproduce.sh
+
+# (B) HEADLINE — the published n=10-seed canonical-split runs (paper §4.9),
+#     pinned to benchmark/canonical_splits/kvasir_split_manifest_2026-05-18.json.
+sbatch scripts/submit_effb0_canonical_n10.sbatch
 ```
 
 For ablations, ConvNeXt-Tiny / ResNet-18 cross-backbone replication,
@@ -56,11 +81,15 @@ C3 autoencoder-residual streams, see the scripts under
 We release [`benchmark/`](./benchmark) as a paired cross-vendor
 evaluation suite (Kvasir-Capsule × Galar). It provides:
 
-- a canonical 43-patient split manifest with content hash,
+- a canonical 43-patient split manifest with content hash
+  (test = 6,423 frames),
 - a 6-class evaluable intersection between the two datasets,
-- a JSON submission schema and a reference evaluator that emits the
-  standard metrics (cross-seed macro-AUC, paired DeLong, BCa bootstrap
-  CIs, retention ratio $\Delta_\text{Galar}/\Delta_\text{Kvasir}$),
+- a JSON submission schema and a reference *submission formatter*
+  (`benchmark/evaluate.py`) that validates a submission of self-reported
+  macro-AUCs and computes the retention ratio
+  $\Delta_\text{Galar}/\Delta_\text{Kvasir}$. Prediction-level statistics
+  (DeLong, BCa, McNemar) are computed upstream by `stats_pi.py`, not by the
+  formatter — see [`benchmark/README.md`](./benchmark/README.md),
 - this paper's reference submission as the baseline leaderboard entry.
 
 See [`benchmark/README.md`](./benchmark/README.md) for the submission

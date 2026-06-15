@@ -76,7 +76,8 @@
             "type": "object",
             "properties": {
               "mean": {"type": "number", "minimum": 0.0, "maximum": 1.0},
-              "sd":   {"type": "number", "minimum": 0.0},
+              "sd":   {"type": ["number", "null"], "minimum": 0.0,
+                       "description": "Cross-seed SD, or null for single-seed / zero-shot per-class entries."},
               "n_positive": {"type": "integer", "minimum": 0}
             }
           }

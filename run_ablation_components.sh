@@ -6,11 +6,11 @@
 #   3. physics_only: zero RGB channels (idx 0,1,2)    — disambiguates "is the prior alone informative or just a regularizer?"
 #
 # Wall-clock: ~3 h per run × 3 = ~9–10 h on the GTX 1660 Ti with AMP.
-# Outputs: D:/kvasir_capsule/outputs/stage2_pi_{blood_only,hafi_only,physics_only}_effb0/
+# Outputs: ./outputs/stage2_pi_{blood_only,hafi_only,physics_only}_effb0/
 
-: "${DATA_DIR:=D:/kvasir_capsule/stage2_data}"
-: "${OUT_BASE:=D:/kvasir_capsule/outputs}"
-: "${GASTRO_DIR:=D:/onedrive/UT_southwestern/GIproject/Dr. Zaman/gastroscopy_code_package (2)/gastroscopy_code_package}"
+: "${DATA_DIR:=./stage2_data}"
+: "${OUT_BASE:=./outputs}"
+: "${GASTRO_DIR:=./gastroscopy_code_package}"
 COMMON="--data_dir $DATA_DIR --model_name efficientnet_b0 --epochs 30 --batch_size 24 --image_size 224 --lr 1e-4 --num_workers 2 --pretrained --use_physics_prior --mixed_precision --scheduler cosine --no_deterministic --gastroscopy_code_dir"
 
 echo "=========================================="

@@ -6,11 +6,11 @@
 #
 # Wall-clock estimate: ~3-3.5 h per run × 6 = ~20 h on the GTX 1660 Ti with AMP.
 #
-# Outputs land at: D:/kvasir_capsule/outputs/stage2_{rgb,pi,distill}_effb0_seed{41,43}/
+# Outputs land at: ./outputs/stage2_{rgb,pi,distill}_effb0_seed{41,43}/
 
-: "${DATA_DIR:=D:/kvasir_capsule/stage2_data}"
-: "${OUT_BASE:=D:/kvasir_capsule/outputs}"
-: "${GASTRO_DIR:=D:/onedrive/UT_southwestern/GIproject/Dr. Zaman/gastroscopy_code_package (2)/gastroscopy_code_package}"
+: "${DATA_DIR:=./stage2_data}"
+: "${OUT_BASE:=./outputs}"
+: "${GASTRO_DIR:=./gastroscopy_code_package}"
 COMMON_RGB_PI="--data_dir $DATA_DIR --model_name efficientnet_b0 --epochs 30 --batch_size 24 --image_size 224 --lr 1e-4 --num_workers 2 --pretrained --mixed_precision --scheduler cosine --no_deterministic --gastroscopy_code_dir"
 COMMON_DISTILL="--data_dir $DATA_DIR --model_name efficientnet_b0 --epochs 30 --batch_size 24 --image_size 224 --lr 1e-4 --num_workers 2 --pretrained --scheduler cosine --no_deterministic --distill_lambda 1.0 --gastroscopy_code_dir"
 

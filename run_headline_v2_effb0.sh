@@ -18,9 +18,10 @@
 #    bash run_headline_v2_effb0.sh
 set -e
 
-OUT=D:/kvasir_capsule/outputs
-DATA=D:/kvasir_capsule/stage2_data
-GASTRO="D:/onedrive/UT_southwestern/GIproject/Dr. Zaman/gastroscopy_code_package (2)/gastroscopy_code_package"
+# Overridable via environment variables; POSIX relative defaults.
+OUT="${OUT_BASE:-./outputs}"
+DATA="${DATA_DIR:-./stage2_data}"
+GASTRO="${GASTRO_DIR:-./gastroscopy_code_package}"
 
 # Note: --gastroscopy_code_dir is passed as a separate quoted arg below
 # because $GASTRO contains spaces and would be word-split if baked into $COMMON.
